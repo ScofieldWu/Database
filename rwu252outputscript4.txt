@@ -1,0 +1,174 @@
+--------------
+CREATE VIEW yearonecourse AS SELECT name, officialname, nickname, city, coursename FROM westerncourse w, equivalentto e, university u, outsidecourse o WHERE e.id = o.id AND e.code = o.code AND e.id = u.id AND w.coursenumber = e.westerncode AND year = 1
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SELECT * FROM yearonecourse
+--------------
+
++---------------------------------------+--------------------------------+----------+-----------+---------------------------------------------+
+| name                                  | officialname                   | nickname | city      | coursename                                  |
++---------------------------------------+--------------------------------+----------+-----------+---------------------------------------------+
+| Introduction to Programming           | University Of Toronto          | UofT     | Toronto   | Intro to Coding using Pascal and Fortran    |
+| Introduction to Programming           | University Of Toronto          | UofT     | Toronto   | Computer Science Fundamentals I             |
+| Intro to Programming for Med students | University Of Toronto          | UofT     | Toronto   | Computer Science Fundamentals I             |
+| Intro to Computer Science             | University of Waterloo         | Waterloo | Waterloo  | Computer Science Fundamentals I             |
+| Intro Programming                     | University of British Columbia | UBC      | Vancouver | Computer Science Fundamentals I             |
+| Advanced Programming                  | University Of Toronto          | UofT     | Toronto   | Computer Science Fundamentals II            |
+| Advanced Programming                  | University of British Columbia | UBC      | Vancouver | Computer Science Fundamentals II            |
+| Introduction to Programming           | University Of Toronto          | UofT     | Toronto   | Modern Survival Skills I: Coding Essentials |
+| Introduction to Using Data Structures | Wilfred Laurier University     | Laurier  | Waterloo  | Algorithms and Data Structures              |
+| Introduction to Databases             | University Of Toronto          | UofT     | Toronto   | Databases I                                 |
++---------------------------------------+--------------------------------+----------+-----------+---------------------------------------------+
+10 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM yearonecourse WHERE nickname = "UofT" ORDER BY coursename
+--------------
+
++---------------------------------------+-----------------------+----------+---------+---------------------------------------------+
+| name                                  | officialname          | nickname | city    | coursename                                  |
++---------------------------------------+-----------------------+----------+---------+---------------------------------------------+
+| Introduction to Programming           | University Of Toronto | UofT     | Toronto | Computer Science Fundamentals I             |
+| Intro to Programming for Med students | University Of Toronto | UofT     | Toronto | Computer Science Fundamentals I             |
+| Advanced Programming                  | University Of Toronto | UofT     | Toronto | Computer Science Fundamentals II            |
+| Introduction to Databases             | University Of Toronto | UofT     | Toronto | Databases I                                 |
+| Introduction to Programming           | University Of Toronto | UofT     | Toronto | Intro to Coding using Pascal and Fortran    |
+| Introduction to Programming           | University Of Toronto | UofT     | Toronto | Modern Survival Skills I: Coding Essentials |
++---------------------------------------+-----------------------+----------+---------+---------------------------------------------+
+6 rows in set (0.01 sec)
+
+--------------
+SELECT * FROM university
+--------------
+
++----+--------------------------------+-----------+--------------+----------+
+| id | officialname                   | city      | provincecode | nickname |
++----+--------------------------------+-----------+--------------+----------+
+|  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  4 | University of Waterloo         | Waterloo  | ON           | Waterloo |
+| 24 | Concordia University           | Montreal  | QB           | Concord  |
+| 44 | Ross University                | Guelph    | ON           | Ross     |
+| 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 77 | Wilfred Laurier University     | Waterloo  | ON           | Laurier  |
+| 88 | McGill University              | Montreal  | QB           | McGill   |
++----+--------------------------------+-----------+--------------+----------+
+8 rows in set (0.00 sec)
+
+--------------
+DELETE FROM university WHERE nickname LIKE "%cord%"
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+SELECT * FROM university
+--------------
+
++----+--------------------------------+-----------+--------------+----------+
+| id | officialname                   | city      | provincecode | nickname |
++----+--------------------------------+-----------+--------------+----------+
+|  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  4 | University of Waterloo         | Waterloo  | ON           | Waterloo |
+| 44 | Ross University                | Guelph    | ON           | Ross     |
+| 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 77 | Wilfred Laurier University     | Waterloo  | ON           | Laurier  |
+| 88 | McGill University              | Montreal  | QB           | McGill   |
++----+--------------------------------+-----------+--------------+----------+
+7 rows in set (0.00 sec)
+
+ERROR 1451 (23000) at line 16: Cannot delete or update a parent row: a foreign key constraint fails (`rwu252assign2db`.`outsidecourse`, CONSTRAINT `outsidecourse_ibfk_1` FOREIGN KEY (`id`) REFERENCES `university` (`id`))
+--------------
+DELETE FROM university WHERE provincecode = "ON"
+--------------
+
+--------------
+SELECT * FROM university
+--------------
+
++----+--------------------------------+-----------+--------------+----------+
+| id | officialname                   | city      | provincecode | nickname |
++----+--------------------------------+-----------+--------------+----------+
+|  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  4 | University of Waterloo         | Waterloo  | ON           | Waterloo |
+| 44 | Ross University                | Guelph    | ON           | Ross     |
+| 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 77 | Wilfred Laurier University     | Waterloo  | ON           | Laurier  |
+| 88 | McGill University              | Montreal  | QB           | McGill   |
++----+--------------------------------+-----------+--------------+----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM outsidecourse o, university u WHERE o.id = u.id
+--------------
+
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+| id | code       | name                                  | year | weight | id | officialname                   | city      | provincecode | nickname |
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+|  2 | CompSci021 | Packages                              |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci022 | Introduction to Programming           |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci023 | Advanced Programming                  |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci033 | Intro to Programming for Med students |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci222 | Introduction to Databases             |    1 |      1 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  4 | CompSci011 | Intro to Computer Science             |    1 |    0.5 |  4 | University of Waterloo         | Waterloo  | ON           | Waterloo |
+|  4 | CompSci123 | Using UNIX                            |    2 |    0.5 |  4 | University of Waterloo         | Waterloo  | ON           | Waterloo |
+| 44 | CompSci108 | Python Programming                    |    1 |    0.5 | 44 | Ross University                | Guelph    | ON           | Ross     |
+| 44 | CompSci444 | Advanced Data Analysis                |    4 |    0.5 | 44 | Ross University                | Guelph    | ON           | Ross     |
+| 55 | CompSci333 | Graphics                              |    3 |    0.5 | 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 55 | CompSci444 | Networks                              |    4 |    0.5 | 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 66 | CompSci021 | Intro Programming                     |    1 |      1 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 66 | CompSci022 | Advanced Programming                  |    1 |    0.5 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 66 | CompSci319 | Using Databases                       |    3 |    0.5 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 77 | CompSci022 | Using Packages                        |    1 |    0.5 | 77 | Wilfred Laurier University     | Waterloo  | ON           | Laurier  |
+| 77 | CompSci101 | Introduction to Using Data Structures |    1 |    0.5 | 77 | Wilfred Laurier University     | Waterloo  | ON           | Laurier  |
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+16 rows in set (0.00 sec)
+
+--------------
+DELETE FROM outsidecourse WHERE id IN (SELECT id FROM university WHERE city = "Waterloo")
+--------------
+
+Query OK, 4 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM outsidecourse o, university u WHERE o.id = u.id
+--------------
+
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+| id | code       | name                                  | year | weight | id | officialname                   | city      | provincecode | nickname |
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+|  2 | CompSci021 | Packages                              |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci022 | Introduction to Programming           |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci023 | Advanced Programming                  |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci033 | Intro to Programming for Med students |    1 |    0.5 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+|  2 | CompSci222 | Introduction to Databases             |    1 |      1 |  2 | University Of Toronto          | Toronto   | ON           | UofT     |
+| 44 | CompSci108 | Python Programming                    |    1 |    0.5 | 44 | Ross University                | Guelph    | ON           | Ross     |
+| 44 | CompSci444 | Advanced Data Analysis                |    4 |    0.5 | 44 | Ross University                | Guelph    | ON           | Ross     |
+| 55 | CompSci333 | Graphics                              |    3 |    0.5 | 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 55 | CompSci444 | Networks                              |    4 |    0.5 | 55 | McMaster University            | Hamilton  | ON           | Mac      |
+| 66 | CompSci021 | Intro Programming                     |    1 |      1 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 66 | CompSci022 | Advanced Programming                  |    1 |    0.5 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
+| 66 | CompSci319 | Using Databases                       |    3 |    0.5 | 66 | University of British Columbia | Vancouver | BC           | UBC      |
++----+------------+---------------------------------------+------+--------+----+--------------------------------+-----------+--------------+----------+
+12 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM yearonecourse
+--------------
+
++---------------------------------------+--------------------------------+----------+-----------+----------------------------------+
+| name                                  | officialname                   | nickname | city      | coursename                       |
++---------------------------------------+--------------------------------+----------+-----------+----------------------------------+
+| Intro to Programming for Med students | University Of Toronto          | UofT     | Toronto   | Computer Science Fundamentals I  |
+| Advanced Programming                  | University Of Toronto          | UofT     | Toronto   | Computer Science Fundamentals II |
+| Introduction to Databases             | University Of Toronto          | UofT     | Toronto   | Databases I                      |
+| Intro Programming                     | University of British Columbia | UBC      | Vancouver | Computer Science Fundamentals I  |
++---------------------------------------+--------------------------------+----------+-----------+----------------------------------+
+4 rows in set (0.00 sec)
+
+Bye
