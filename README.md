@@ -1,5 +1,5 @@
 # CS9159 Database Project
-## Topic: Academic Counsulting - Build University Course System
+## Topic: Academic Consulting - Build University Course System
 ### Part 1:
 1. Drawing ER diagrams
 2. Converting an ER diagram to a relational database
